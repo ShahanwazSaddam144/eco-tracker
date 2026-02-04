@@ -123,7 +123,7 @@ const Tracker = () => {
   };
 
   return (
-    <section className="bg-gradient-to-b from-green-50 to-white py-16 px-4">
+    <section className="bg-gradient-to-b from-green-50 to-white py-16 px-4" id="tracker">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
