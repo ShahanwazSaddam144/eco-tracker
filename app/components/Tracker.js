@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -29,11 +30,13 @@ const getWeekKey = () => {
   const firstDayOfYear = new Date(now.getFullYear(), 0, 1);
   const pastDays = Math.floor((now - firstDayOfYear) / DAY_MS);
   return `${now.getFullYear()}-W${Math.ceil(
-    (pastDays + firstDayOfYear.getDay() + 1) / 7
+    (pastDays + firstDayOfYear.getDay() + 1) / 7,
   )}`;
 };
 
 const Tracker = () => {
+  const router = useRouter();
+  const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
     transport: "",
     electricity: "",
@@ -45,6 +48,22 @@ const Tracker = () => {
   const [canSubmit, setCanSubmit] = useState(true);
   const [timeLeft, setTimeLeft] = useState(null);
   const [weekKey, setWeekKey] = useState(getWeekKey());
+  const [pop, setPop] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    fetch("http://192.168.100.77:5000/api/auth/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) setUser(data.user);
+      })
+      .catch(() => localStorage.removeItem("token"));
+  }, []);
 
   useEffect(() => {
     const currentWeek = getWeekKey();
@@ -96,6 +115,11 @@ const Tracker = () => {
   };
 
   const handleSubmit = () => {
+    if (!user) {
+      setPop(true);
+      return;
+    }
+
     if (!formData.transport || !formData.electricity || !formData.plastic)
       return;
 
@@ -123,7 +147,10 @@ const Tracker = () => {
   };
 
   return (
-    <section className="bg-gradient-to-b from-green-50 to-white py-16 px-4" id="tracker">
+    <section
+      className="bg-gradient-to-b from-green-50 to-white py-16 px-4"
+      id="tracker"
+    >
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -246,6 +273,33 @@ const Tracker = () => {
           )}
         </div>
       </div>
+
+      {pop && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/50 z-50 w-full min-h-screen"
+            onClick={() => setPop(false)}
+          ></div>
+
+          <div className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-green-600 rounded-lg shadow-lg w-[90%] max-w-sm p-6 text-center">
+            <button
+              onClick={() => setPop(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-lg font-bold"
+            >
+              ×
+            </button>
+            <h1 className="text-lg font-semibold text-gray-800 mb-4">
+              Please log in to submit your eco log 🌱
+            </h1>
+            <button
+              onClick={() => router.push("/auth")}
+              className="px-4 py-2 bg-green-600 cursor-pointer text-white rounded hover:bg-green-700"
+            >
+              Go to Login
+            </button>
+          </div>
+        </>
+      )}
     </section>
   );
 };
