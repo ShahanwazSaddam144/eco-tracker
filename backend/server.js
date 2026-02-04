@@ -23,10 +23,9 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-app.use(limiter);
 
 //Routes
-app.use("/api/auth", Auth);
+app.use("/api/auth", Auth, limiter);
 
 // Mongoose connect
 mongoose
