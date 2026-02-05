@@ -30,7 +30,7 @@ const Navbar = () => {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    fetch("http://192.168.100.77:5000/api/auth/me", {
+    fetch("http://localhost:5000/api/auth/me", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -47,7 +47,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     const token = localStorage.getItem("token");
     try {
-      await fetch("http://192.168.100.77:5000/api/auth/logout", {
+      await fetch("http://localhost:5000/api/auth/logout", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

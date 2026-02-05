@@ -4,6 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const Auth = require("./controllers/auth");
+const Tracker = require("./controllers/tracker");
 const Port = process.env.PORT || 5000;
 const app = express();
 
@@ -26,6 +27,7 @@ const limiter = rateLimit({
 
 //Routes
 app.use("/api/auth", Auth, limiter);
+app.use("/api", Tracker, limiter);
 
 // Mongoose connect
 mongoose
