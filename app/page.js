@@ -1,5 +1,6 @@
 import CausesAndEffect from "./components/CausesAndEffect";
 import Hero from "./components/Hero";
+import LiveStatsSection from "./components/LiveStats";
 import Navbar from "./components/Navbar";
 import Tracker from "./components/Tracker";
 
@@ -11,6 +12,7 @@ export default function Home() {
     <Hero />
     <CausesAndEffect />
     <Tracker />
+    <LiveStatsSection />
     </>
   );
 }

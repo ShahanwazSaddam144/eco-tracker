@@ -7,19 +7,22 @@ import { useRouter } from "next/navigation";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const TRANSPORT_CO2 = {
-  bike: 0,
   walk: 0,
+  bike: 0,
   public: 2,
   car: 8,
+  rideshare: 6,
 };
 
 const ELECTRICITY_CO2 = {
   low: 2,
   medium: 5,
   high: 10,
+  renewable: 0,
 };
 
 const PLASTIC_CO2 = {
+  none: 0,
   low: 1,
   medium: 3,
   high: 6,
@@ -27,22 +30,16 @@ const PLASTIC_CO2 = {
 
 const getWeekKey = () => {
   const now = new Date();
-  const firstDayOfYear = new Date(now.getFullYear(), 0, 1);
-  const pastDays = Math.floor((now - firstDayOfYear) / DAY_MS);
+  const firstDay = new Date(now.getFullYear(), 0, 1);
+  const past = Math.floor((now - firstDay) / DAY_MS);
   return `${now.getFullYear()}-W${Math.ceil(
-    (pastDays + firstDayOfYear.getDay() + 1) / 7,
+    (past + firstDay.getDay() + 1) / 7
   )}`;
 };
 
-const Tracker = () => {
+export default function Tracker() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [formData, setFormData] = useState({
-    transport: "",
-    electricity: "",
-    plastic: "",
-  });
-
   const [entries, setEntries] = useState([]);
   const [lastSubmit, setLastSubmit] = useState(null);
   const [canSubmit, setCanSubmit] = useState(true);
@@ -50,26 +47,28 @@ const Tracker = () => {
   const [weekKey, setWeekKey] = useState(getWeekKey());
   const [pop, setPop] = useState(false);
 
+  const [formData, setFormData] = useState({
+    transport: "",
+    electricity: "",
+    plastic: "",
+  });
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
     fetch("http://192.168.100.77:5000/api/auth/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) setUser(data.user);
-      })
+      .then((r) => r.json())
+      .then((d) => d?.success && setUser(d.user))
       .catch(() => localStorage.removeItem("token"));
   }, []);
 
   useEffect(() => {
-    const currentWeek = getWeekKey();
-    if (currentWeek !== weekKey) {
+    const current = getWeekKey();
+    if (current !== weekKey) {
       setEntries([]);
-      setWeekKey(currentWeek);
+      setWeekKey(current);
       setLastSubmit(null);
       setCanSubmit(true);
       setTimeLeft(null);
@@ -87,10 +86,8 @@ const Tracker = () => {
 
   useEffect(() => {
     if (!canSubmit && timeLeft > 0) {
-      const timer = setInterval(() => {
-        setTimeLeft((t) => t - 1000);
-      }, 1000);
-      return () => clearInterval(timer);
+      const t = setInterval(() => setTimeLeft((x) => x - 1000), 1000);
+      return () => clearInterval(t);
     }
     if (timeLeft <= 0 && timeLeft !== null) {
       setCanSubmit(true);
@@ -98,19 +95,15 @@ const Tracker = () => {
     }
   }, [timeLeft, canSubmit]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const calculateImpact = () => {
-    const totalCO2 =
+    const total =
       (TRANSPORT_CO2[formData.transport] || 0) +
       (ELECTRICITY_CO2[formData.electricity] || 0) +
       (PLASTIC_CO2[formData.plastic] || 0);
 
     return {
-      totalCO2,
-      ecoScore: Math.max(0, 100 - totalCO2 * 3),
+      totalCO2: total,
+      ecoScore: Math.max(0, 100 - total * 3),
     };
   };
 
@@ -125,14 +118,12 @@ const Tracker = () => {
 
     const impact = calculateImpact();
 
-    const entry = {
-      ...formData,
-      ...impact,
-      date: new Date().toLocaleDateString(),
-      timestamp: Date.now(),
-    };
+    setEntries((p) =>
+      [...p, { ...formData, ...impact, date: new Date().toLocaleDateString() }].slice(
+        -7
+      )
+    );
 
-    setEntries((prev) => [...prev, entry].slice(-7));
     setLastSubmit(Date.now());
     setCanSubmit(false);
     setTimeLeft(DAY_MS);
@@ -147,118 +138,153 @@ const Tracker = () => {
   };
 
   return (
-    <section
-      className="bg-gradient-to-b from-green-50 to-white py-16 px-4"
-      id="tracker"
-    >
-      <div className="max-w-6xl mx-auto">
+    <section className="bg-gradient-to-b from-emerald-50 via-white to-white py-20 px-4">
+      <div className="max-w-6xl mx-auto space-y-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center"
         >
-          <h2 className="text-4xl font-bold text-green-600">
-            Weekly Eco Impact Tracker
+          <h2 className="text-4xl md:text-5xl font-black text-green-600 tracking-tight">
+            Weekly Eco Impact Console
           </h2>
-          <p className="mt-3 text-gray-600">
-            One eco log per day. Fresh start every week.
+          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+            Monitor your environmental footprint. One verified entry per day.
+            Weekly protocol resets automatically.
           </p>
         </motion.div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-6 mb-12">
-          <h3 className="text-xl font-semibold text-emerald-600 mb-4">
-            🌱 Today’s Entry
-          </h3>
+        <div className="grid lg:grid-cols-3 gap-8">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-2 bg-white rounded-3xl border border-emerald-100 shadow-xl p-8"
+          >
+            <h3 className="text-xl font-bold text-green-600 mb-6">
+              Daily Impact Input
+            </h3>
 
-          {!canSubmit && (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center">
-              <p className="text-green-700 font-medium">
-                You’ve already logged today 🌍
-              </p>
-              <p className="text-sm text-gray-600 mt-2">
-                Next entry available in
-              </p>
-              <p className="text-lg font-semibold text-emerald-700 mt-1">
-                {formatTime(timeLeft)}
-              </p>
-            </div>
-          )}
-
-          {canSubmit && (
-            <>
-              <div className="grid md:grid-cols-3 gap-4">
-                <select
-                  name="transport"
-                  value={formData.transport}
-                  onChange={handleChange}
-                  className="border rounded-lg px-4 py-2"
-                >
-                  <option value="">Transport</option>
-                  <option value="walk">Walk</option>
-                  <option value="bike">Bike</option>
-                  <option value="public">Public Transport</option>
-                  <option value="car">Car</option>
-                </select>
-
-                <select
-                  name="electricity"
-                  value={formData.electricity}
-                  onChange={handleChange}
-                  className="border rounded-lg px-4 py-2"
-                >
-                  <option value="">Electricity</option>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </select>
-
-                <select
-                  name="plastic"
-                  value={formData.plastic}
-                  onChange={handleChange}
-                  className="border rounded-lg px-4 py-2"
-                >
-                  <option value="">Plastic</option>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </select>
+            {!canSubmit ? (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-8 text-center">
+                <p className="font-semibold text-green-600">
+                  Entry Logged Successfully
+                </p>
+                <p className="mt-3 text-gray-600">
+                  Next submission unlocks in
+                </p>
+                <p className="mt-2 text-xl font-bold text-emerald-700">
+                  {formatTime(timeLeft)}
+                </p>
               </div>
+            ) : (
+              <>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <select
+                    name="transport"
+                    value={formData.transport}
+                    onChange={(e) =>
+                      setFormData({ ...formData, transport: e.target.value })
+                    }
+                    className="border rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500"
+                  >
+                    <option value="">Transport Mode</option>
+                    <option value="walk">Walk</option>
+                    <option value="bike">Bike</option>
+                    <option value="public">Public Transit</option>
+                    <option value="rideshare">Ride Share</option>
+                    <option value="car">Private Car</option>
+                  </select>
 
-              <button
-                onClick={handleSubmit}
-                className="mt-6 w-full bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 
-                transition-all duration-300 cursor-pointer"
-              >
-                Submit Today
-              </button>
-            </>
-          )}
+                  <select
+                    name="electricity"
+                    value={formData.electricity}
+                    onChange={(e) =>
+                      setFormData({ ...formData, electricity: e.target.value })
+                    }
+                    className="border rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500"
+                  >
+                    <option value="">Electricity Usage</option>
+                    <option value="renewable">Renewable</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+
+                  <select
+                    name="plastic"
+                    value={formData.plastic}
+                    onChange={(e) =>
+                      setFormData({ ...formData, plastic: e.target.value })
+                    }
+                    className="border rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500"
+                  >
+                    <option value="">Plastic Consumption</option>
+                    <option value="none">None</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
+
+                <button
+                  onClick={handleSubmit}
+                  className="mt-8 w-full bg-green-600 text-white py-3 rounded-2xl 
+                  font-semibold hover:bg-green-700 transition cursor-pointer"
+                >
+                  Submit Eco Log
+                </button>
+              </>
+            )}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="bg-gradient-to-br from-emerald-500 to-green-700 rounded-3xl p-8 text-white shadow-xl"
+          >
+            <h4 className="text-lg font-bold tracking-wide mb-4">
+              Mission Protocols
+            </h4>
+
+            <ul className="space-y-3 text-sm opacity-90">
+              <li>• One verified eco entry per 24h</li>
+              <li>• Weekly system reset every Monday</li>
+              <li>• Scores calculated in real-time</li>
+              <li>• Renewable actions boost rankings</li>
+            </ul>
+
+            <button
+              onClick={() => router.push("/leaderboard")}
+              className="mt-8 w-full bg-white text-green-600 font-semibold py-2 rounded-xl hover:bg-emerald-50 transition"
+            >
+              View Global Rankings
+            </button>
+          </motion.div>
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-gray-800 mb-6">
-            📊 Current Week Overview
+          <h3 className="text-2xl font-bold text-gray-800 mb-6">
+            Weekly Telemetry
           </h3>
 
           {entries.length === 0 ? (
-            <p className="text-gray-500">No entries yet.</p>
+            <p className="text-gray-500">No activity recorded yet.</p>
           ) : (
             <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {entries.map((e, i) => (
                 <motion.div
                   key={i}
-                  whileHover={{ scale: 1.03 }}
-                  className="bg-gradient-to-br from-white to-emerald-50 rounded-2xl border border-emerald-100 p-5 shadow-sm"
+                  whileHover={{ scale: 1.04 }}
+                  className="bg-white border border-emerald-100 rounded-2xl p-5 shadow-sm"
                 >
                   <p className="text-xs text-gray-500 mb-2">{e.date}</p>
-                  <div className="space-y-1 text-sm">
-                    <p>🚶 {e.transport}</p>
-                    <p>⚡ {e.electricity}</p>
-                    <p>🧴 {e.plastic}</p>
-                  </div>
+                  <p className="text-sm">🚶 {e.transport}</p>
+                  <p className="text-sm">⚡ {e.electricity}</p>
+                  <p className="text-sm">🧴 {e.plastic}</p>
                   <div className="mt-4 pt-3 border-t">
                     <p className="text-sm font-semibold text-emerald-700">
                       CO₂: {e.totalCO2} kg
@@ -277,31 +303,23 @@ const Tracker = () => {
       {pop && (
         <>
           <div
-            className="fixed inset-0 bg-black/50 z-50 w-full min-h-screen"
+            className="fixed inset-0 bg-black/50 z-50"
             onClick={() => setPop(false)}
           ></div>
 
-          <div className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-green-600 rounded-lg shadow-lg w-[90%] max-w-sm p-6 text-center">
-            <button
-              onClick={() => setPop(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-lg font-bold"
-            >
-              ×
-            </button>
-            <h1 className="text-lg font-semibold text-gray-800 mb-4">
-              Please log in to submit your eco log 🌱
+          <div className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-emerald-600 rounded-2xl shadow-xl w-[90%] max-w-sm p-6 text-center">
+            <h1 className="text-lg font-semibold mb-4">
+              Authentication Required
             </h1>
             <button
               onClick={() => router.push("/auth")}
-              className="px-4 py-2 bg-green-600 cursor-pointer text-white rounded hover:bg-green-700"
+              className="px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700"
             >
-              Go to Login
+              Proceed to Login
             </button>
           </div>
         </>
       )}
     </section>
   );
-};
-
-export default Tracker;
+}
