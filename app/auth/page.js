@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Leaf, CircleCheck, CircleX, Eye, EyeOff } from "lucide-react";
-import Link from 'next/link';
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
@@ -29,11 +29,14 @@ const AuthPage = () => {
     if (token) router.replace("/");
   }, [router]);
 
-  const isFormValid = useMemo(() => {
-    if (!email || !password) return false;
-    if (!isLogin && !name) return false;
-    return true;
-  }, [isLogin, name, email, password]);
+  useEffect(() => {
+    if (popup.message) {
+      const timer = setTimeout(() => {
+        setPopup({ message: "", type: "" });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [popup]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,6 +50,10 @@ const AuthPage = () => {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      setPopup({
+        message: "Please fill all required fields correctly.",
+        type: "error",
+      });
       return;
     }
 
@@ -67,10 +74,18 @@ const AuthPage = () => {
         body: JSON.stringify(body),
       });
 
-      const data = await res.json();
+      let data = {};
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Invalid server response");
+      }
 
       if (!res.ok) {
-        setPopup({ message: data.message || "Something went wrong", type: "error" });
+        setPopup({
+          message: data.message || "Invalid credentials or server error.",
+          type: "error",
+        });
         setIsLoading(false);
         return;
       }
@@ -80,11 +95,19 @@ const AuthPage = () => {
         setPopup({ message: "Login successful!", type: "success" });
         setTimeout(() => router.replace("/"), 600);
       } else {
-        setPopup({ message: "Account created! Please verify your email.", type: "success" });
-        setName(""); setEmail(""); setPassword("");
+        setPopup({
+          message: "Account created! Please verify your email.",
+          type: "success",
+        });
+        setName("");
+        setEmail("");
+        setPassword("");
       }
     } catch {
-      setPopup({ message: "Server error. Try again later.", type: "error" });
+      setPopup({
+        message: "Server error. Try again later.",
+        type: "error",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -98,11 +121,17 @@ const AuthPage = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-6xl flex flex-col-reverse md:flex-row rounded-2xl shadow-2xl overflow-hidden bg-white"
       >
-        {/* Left Info Panel */}
         <div className="flex flex-col justify-center w-full md:w-1/2 bg-green-50 p-8 md:p-12 space-y-6 order-2 md:order-1">
           <Leaf className="w-14 h-14 text-green-600 animate-bounce" />
-          <Link href="/"><h2 className="text-4xl font-extrabold text-green-600">EcoTracker</h2></Link>          <p className="text-green-700 text-lg leading-relaxed">
-            Track your environmental impact and live sustainably. Monitor your energy use, transportation, and plastic footprint to make greener choices every day.
+          <Link href="/">
+            <h2 className="text-4xl font-extrabold text-green-600">
+              EcoTracker
+            </h2>
+          </Link>
+          <p className="text-green-700 text-lg leading-relaxed">
+            Track your environmental impact and live sustainably. Monitor your
+            energy use, transportation, and plastic footprint to make greener
+            choices every day.
           </p>
           <ul className="list-disc list-inside text-green-700 space-y-2 text-lg">
             <li>Track daily eco habits</li>
@@ -111,13 +140,14 @@ const AuthPage = () => {
           </ul>
         </div>
 
-        {/* Right Form Panel */}
         <div className="w-full md:w-1/2 p-10 md:p-12 flex flex-col justify-center order-1 md:order-2">
           <div className="mb-6 text-center">
             <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-1">
               {isLogin ? "Login to EcoTracker" : "Create your account"}
             </h1>
-            <p className="text-sm text-gray-500">Track your impact. Live greener.</p>
+            <p className="text-sm text-gray-500">
+              Track your impact. Live greener.
+            </p>
           </div>
 
           <AnimatePresence>
@@ -132,7 +162,11 @@ const AuthPage = () => {
                     : "bg-red-50 border border-red-300 text-red-700"
                 }`}
               >
-                {popup.type === "success" ? <CircleCheck size={18} /> : <CircleX size={18} />}
+                {popup.type === "success" ? (
+                  <CircleCheck size={18} />
+                ) : (
+                  <CircleX size={18} />
+                )}
                 {popup.message}
               </motion.div>
             )}
@@ -148,7 +182,9 @@ const AuthPage = () => {
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-1 transition"
                 />
-                {errors.name && <p className="text-xs text-red-600 mt-1">{errors.name}</p>}
+                {errors.name && (
+                  <p className="text-xs text-red-600 mt-1">{errors.name}</p>
+                )}
               </div>
             )}
 
@@ -160,7 +196,9 @@ const AuthPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-1 transition"
               />
-              {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email}</p>}
+              {errors.email && (
+                <p className="text-xs text-red-600 mt-1">{errors.email}</p>
+              )}
             </div>
 
             <div className="relative">
@@ -178,12 +216,16 @@ const AuthPage = () => {
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
-              {errors.password && <p className="text-xs text-red-600 mt-1">{errors.password}</p>}
+              {errors.password && (
+                <p className="text-xs text-red-600 mt-1">
+                  {errors.password}
+                </p>
+              )}
             </div>
 
             <button
               type="submit"
-              disabled={!isFormValid || isLoading}
+              disabled={isLoading}
               className="bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg flex justify-center gap-2 transition text-lg font-medium"
             >
               {isLoading && <Spinner />}

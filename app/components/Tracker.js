@@ -192,7 +192,8 @@ export default function Tracker() {
       {pop && (
         <>
           <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setPop(false)}></div>
-          <div className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-green-600 rounded-2xl shadow-xl w-[90%] max-w-sm p-6 text-center">
+          <div className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border-2
+          border-green-600 rounded-2xl shadow-xl w-[90%] max-w-sm p-6 text-center">
             <h1 className="text-lg font-semibold mb-4">{popMessage}</h1>
             {popMessage === "Authentication Required" && <button onClick={() => router.push("/auth")} className="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700">Proceed to Login</button>}
             {popMessage === "Please fill all fields" && <button onClick={() => setPop(false)} className="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700">OK</button>}

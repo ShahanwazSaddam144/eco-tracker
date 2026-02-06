@@ -86,8 +86,9 @@ const Navbar = () => {
             {!user ? (
               <button
                 onClick={() => router.push("/auth")}
-                className="px-8 py-2 border border-green-600 text-gray-700 rounded-[3px] hover:text-white hover:bg-green-600 transition"
-              >
+                className="px-8 py-2 border-2 border-gray-300 font-semibold hover:border-green-600 
+                text-gray-700 rounded-[3px] hover:text-white hover:bg-green-600 cursor-pointer
+                transition">
                 Login
               </button>
             ) : (
@@ -134,7 +135,7 @@ const Navbar = () => {
             {!user ? (
               <button
                 onClick={() => router.push("/auth")}
-                className="border border-green-600 py-2 rounded-[3px]"
+                className="border-2 border-gray-300 hover:border-green-600 py-2 rounded-[3px]"
               >
                 Login
               </button>
@@ -176,7 +177,7 @@ const Navbar = () => {
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setPop(false)}
-                className="px-4 py-2 border border-green-600 rounded hover:bg-green-600 cursor-pointer hover:text-white"
+                className="px-4 py-2 border-2 border-gray-300 font-semibold hover:border-green-600 rounded hover:bg-green-600 cursor-pointer hover:text-white"
               >
                 Cancel
               </button>
