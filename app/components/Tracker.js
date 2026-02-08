@@ -357,7 +357,7 @@ export default function Tracker() {
                   key={i}
                   whileHover={{ scale: 1.05, y: -5 }}
                   transition={{ duration: 0.2 }}
-                  className="card-elevated bg-gradient-to-br from-white to-emerald-50/30 border-2 border-emerald-100 p-6 group"
+                  className="card-elevated bg-gradient-to-br from-white to-emerald-50/30 border-2 border-gray-300 hover:border-green-300 cursor-pointer p-6 group"
                 >
                   <p className="text-xs font-semibold text-emerald-600 mb-3 uppercase tracking-wider">
                     {e.date}
