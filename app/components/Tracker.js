@@ -172,7 +172,7 @@ export default function Tracker() {
           {entries.length === 0 ? <p className="text-gray-500">No activity recorded yet.</p> : (
             <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {entries.map((e, i) => (
-                <motion.div key={i} whileHover={{ scale: 1.05 }} className="bg-white border border-emerald-100 rounded-3xl p-5 shadow-md hover:shadow-xl transition">
+                <motion.div key={i} whileHover={{ scale: 1.05 }} className="bg-white border-2 hover:border-green-300 border-gray-300 rounded-3xl p-5 shadow-md hover:shadow-xl transition">
                   <p className="text-xs text-gray-500 mb-2">{e.date}</p>
                   <p className="text-sm">Transport: {TRANSPORT_EMOJI[e.transport]} {e.transport}</p>
                   <p className="text-sm">Electricity: {ELECTRICITY_EMOJI[e.electricity]} {e.electricity}</p>

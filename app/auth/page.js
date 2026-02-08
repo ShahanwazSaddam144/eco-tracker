@@ -121,7 +121,7 @@ const AuthPage = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-6xl flex flex-col-reverse md:flex-row rounded-2xl shadow-2xl overflow-hidden bg-white"
       >
-        <div className="flex flex-col justify-center w-full md:w-1/2 bg-green-50 p-8 md:p-12 space-y-6 order-2 md:order-1">
+        <div className="hidden md:flex flex-col justify-center w-full md:w-1/2 bg-green-50 p-8 md:p-12 space-y-6 order-2 md:order-1">
           <Leaf className="w-14 h-14 text-green-600 animate-bounce" />
           <Link href="/">
             <h2 className="text-4xl font-extrabold text-green-600">
