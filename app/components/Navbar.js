@@ -62,22 +62,25 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed z-50 top-0 left-0 border-b border-gray-300 w-full bg-white">
+      <nav className="fixed z-50 top-0 left-0 w-full bg-gradient-to-r from-white via-emerald-50/50 to-white backdrop-blur-lg border-b border-emerald-100/30 shadow-lg">
         <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-          <Link href="/" className="flex items-center gap-2 text-green-600">
-            <Leaf className="w-8 h-8" />
-            <span className="text-xl sm:text-[28px] font-semibold">
+          <Link href="/" className="flex items-center gap-2 text-emerald-600 group">
+            <div className="p-2 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 group-hover:shadow-lg transition-all duration-300">
+              <Leaf className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-2xl sm:text-[28px] font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
               EcoTracker
             </span>
           </Link>
 
-          <ul className="hidden lg:flex items-center gap-6 text-gray-700 font-medium">
+          <ul className="hidden lg:flex items-center gap-2 text-gray-700 font-medium">
             {navLinks.map((item) => (
               <li
                 key={item.name}
-                className="hover:bg-green-600 hover:text-white px-4 py-1 rounded-[3px]"
+                className="relative px-4 py-2 rounded-lg hover:bg-gradient-to-r hover:from-emerald-500 hover:to-green-600 hover:text-white transition-all duration-300 group"
               >
                 <Link href={item.path}>{item.name}</Link>
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-green-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"></div>
               </li>
             ))}
           </ul>
@@ -86,23 +89,21 @@ const Navbar = () => {
             {!user ? (
               <button
                 onClick={() => router.push("/auth")}
-                className="px-8 py-2 border-2 border-gray-300 font-semibold hover:border-green-600 
-                text-gray-700 rounded-[3px] hover:text-white hover:bg-green-600 cursor-pointer
-                transition">
+                className="btn-secondary hover:bg-emerald-500 hover:text-white transition-all duration-300"
+              >
                 Login
               </button>
             ) : (
               <div className="flex items-center gap-3">
                 <div
                   title={user.name}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-green-600 text-white font-semibold"
+                  className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-green-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
                 >
                   {getInitials(user.name)}
                 </div>
                 <button
                   onClick={() => setPop(true)}
-                  className="flex items-center gap-1 text-sm bg-red-600 hover:underline
-                  text-white px-4 py-2 rounded-[5px] hover:bg-red-700 text-semibold cursor-pointer"
+                  className="flex items-center gap-2 text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   <LogOut size={16} />
                   Logout
@@ -113,16 +114,16 @@ const Navbar = () => {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-gray-700"
+            className="lg:hidden text-gray-700 p-2 hover:bg-emerald-100 rounded-lg transition-all duration-300"
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
         {isOpen && (
-          <ul className="lg:hidden flex flex-col gap-4 px-6 pb-4 border-b border-gray-300">
+          <ul className="lg:hidden flex flex-col gap-2 px-6 pb-4 border-t border-emerald-100/50 bg-gradient-to-b from-emerald-50/50 to-transparent">
             {navLinks.map((item) => (
-              <li key={item.name}>
+              <li key={item.name} className="py-2 hover:bg-emerald-100/50 rounded-lg px-2 transition-colors duration-300">
                 <Link
                   href={item.path}
                   onClick={() => setIsOpen(false)}
@@ -135,26 +136,23 @@ const Navbar = () => {
             {!user ? (
               <button
                 onClick={() => router.push("/auth")}
-                className="border-2 border-gray-300 hover:border-green-600 py-2 rounded-[3px]"
+                className="btn-secondary w-full mt-2"
               >
                 Login
               </button>
             ) : (
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mt-2 p-3 bg-white/50 rounded-lg">
                 <div className="flex items-center gap-2">
-                  <div className="w-9 h-9 rounded-full bg-green-600 text-white flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 text-white flex items-center justify-center shadow-md">
                     {getInitials(user.name)}
                   </div>
-                  <span className="text-sm">{user.name}</span>
+                  <span className="text-sm font-semibold">{user.name}</span>
                 </div>
                 <button
                   onClick={() => setPop(true)}
-                  className="text-red-600 flex gap-3 text-[12px] bg-red-600 hover:underline
-                  text-white px-2 py-1 rounded-[5px] hover:bg-red-700 text-semibold 
-                  items-center cursor-pointer"
+                  className="text-red-500 hover:bg-red-500 hover:text-white px-3 py-1 rounded-lg transition-all duration-300"
                 >
-                  <LogOut size={20} />
-                  Logout
+                  <LogOut size={18} />
                 </button>
               </div>
             )}
@@ -165,26 +163,27 @@ const Navbar = () => {
       {pop && (
         <>
           <div
-            className="fixed inset-0 bg-black/50 z-50 w-full min-h-screen"
+            className="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
             onClick={() => setPop(false)}
           ></div>
 
-          <div className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border border-green-600 rounded-lg shadow-lg w-[90%] max-w-sm p-6">
-            <h1 className="text-lg font-semibold text-gray-800 mb-4">
-              Are you sure you want to logout?
+          <div className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-[90%] max-w-sm p-8 animate-slide-down border border-emerald-100">
+            <h1 className="text-lg font-bold text-gray-900 mb-4">
+              Confirm Logout
             </h1>
+            <p className="text-gray-600 mb-6">Are you sure you want to logout?</p>
 
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setPop(false)}
-                className="px-4 py-2 border-2 border-gray-300 font-semibold hover:border-green-600 rounded hover:bg-green-600 cursor-pointer hover:text-white"
+                className="btn-secondary"
               >
                 Cancel
               </button>
 
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+                className="px-6 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
               >
                 Logout
               </button>

@@ -84,70 +84,76 @@ const effects = [
 
 const CauseCard = ({ item }) => (
   <motion.div
-    whileHover={{ y: -6, scale: 1.02 }}
+    whileHover={{ y: -8, scale: 1.03 }}
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
     viewport={{ once: true }}
-    className="bg-gradient-to-b from-green-50 to-white rounded-xl shadow-md overflow-hidden"
+    className="card-elevated bg-gradient-to-br from-white via-emerald-50/30 to-green-50/20 border border-emerald-100/50 overflow-hidden group"
   >
-    <Image
-      src={item.img}
-      alt={item.title}
-      width={300}
-      height={300}
-      className="h-36 w-full object-cover"
-    />
+    <div className="relative overflow-hidden h-40">
+      <Image
+        src={item.img}
+        alt={item.title}
+        width={300}
+        height={300}
+        className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+        {item.severity}
+      </span>
+    </div>
 
-    <div className="p-4 text-center">
-      <h4 className="font-semibold text-gray-800">{item.title}</h4>
+    <div className="p-5 text-center">
+      <h4 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-emerald-600 transition-colors duration-300">
+        {item.title}
+      </h4>
 
-      <p className="text-sm text-gray-600 mt-1">{item.desc}</p>
+      <p className="text-sm text-gray-700 mb-3">{item.desc}</p>
 
-      <p className="text-xs text-emerald-600 mt-2 font-medium">
-        Severity: {item.severity}
-      </p>
-
-      <p className="text-xs text-gray-500 mt-1">{item.stat}</p>
-
-      <p className="text-xs text-gray-400 mt-1 italic">
-        {item.insight}
-      </p>
+      <div className="space-y-2 pt-3 border-t border-emerald-100">
+        <p className="text-xs text-emerald-600 font-bold">📊 {item.stat}</p>
+        <p className="text-xs text-gray-600 italic">💡 {item.insight}</p>
+      </div>
     </div>
   </motion.div>
 );
 
 const EffectCard = ({ item }) => (
   <motion.div
-    whileHover={{ y: -6, scale: 1.02 }}
+    whileHover={{ y: -8, scale: 1.03 }}
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
     viewport={{ once: true }}
-    className="bg-white rounded-xl shadow-md overflow-hidden"
+    className="card-elevated bg-gradient-to-br from-white via-red-50/20 to-orange-50/20 border border-red-100/50 overflow-hidden group"
   >
-    <Image
-      src={item.img}
-      alt={item.title}
-      width={300}
-      height={300}
-      className="h-36 w-full object-cover"
-    />
+    <div className="relative overflow-hidden h-40">
+      <Image
+        src={item.img}
+        alt={item.title}
+        width={300}
+        height={300}
+        className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <span className="absolute top-3 right-3 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+        {item.impact}
+      </span>
+    </div>
 
-    <div className="p-4 text-center">
-      <h4 className="font-semibold text-gray-800">{item.title}</h4>
+    <div className="p-5 text-center">
+      <h4 className="font-bold text-gray-900 text-lg mb-2 group-hover:text-red-600 transition-colors duration-300">
+        {item.title}
+      </h4>
 
-      <p className="text-sm text-gray-600 mt-1">{item.desc}</p>
+      <p className="text-sm text-gray-700 mb-3">{item.desc}</p>
 
-      <p className="text-xs text-red-500 mt-2 font-medium">
-        Impact: {item.impact}
-      </p>
-
-      <p className="text-xs text-gray-500 mt-1">{item.stat}</p>
-
-      <p className="text-xs text-gray-400 mt-1 italic">
-        {item.insight}
-      </p>
+      <div className="space-y-2 pt-3 border-t border-red-100">
+        <p className="text-xs text-red-600 font-bold">📉 {item.stat}</p>
+        <p className="text-xs text-gray-600 italic">💡 {item.insight}</p>
+      </div>
     </div>
   </motion.div>
 );
@@ -158,22 +164,28 @@ const EffectCard = ({ item }) => (
 const CausesAndEffect = () => {
   return (
     <section
-      className="bg-gradient-to-b from-green-50 to-white py-16 px-4 overflow-hidden"
+      className="bg-gradient-to-b from-white via-emerald-50/50 to-white py-20 px-4 overflow-hidden relative"
       id="causesAndEffects"
     >
-      <div className="max-w-7xl mx-auto">
+      {/* Decorative background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-100/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-green-100/20 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-green-600">
+          <h2 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-4">
             Causes & Effects of Environmental Tension
           </h2>
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+          <p className="mt-4 text-gray-700 max-w-2xl mx-auto text-lg leading-relaxed">
             Eco-Tracker identifies the root causes of environmental stress and
             translates complex data into meaningful insights for awareness,
             policy support, and sustainable action.
@@ -181,9 +193,9 @@ const CausesAndEffect = () => {
         </motion.div>
 
         { /* CAUSES */ }
-        <div className="mb-20">
-          <h3 className="text-[20px] sm:text-2xl font-semibold text-emerald-600 mb-6 flex items-center gap-2">
-            🌿 Causes of Environmental Tension
+        <div className="mb-24">
+          <h3 className="text-2xl sm:text-3xl font-bold text-emerald-600 mb-8 flex items-center gap-3">
+            <span className="text-3xl">🌿</span> Causes of Environmental Tension
           </h3>
 
           {/* Mobile Swiper */}
@@ -213,8 +225,8 @@ const CausesAndEffect = () => {
 
         {/* EFFECTS */}
         <div>
-          <h3 className="text-[20px] sm:text-2xl font-semibold text-red-500 mb-6 flex items-center gap-2">
-            ⚠️ Effects on Our Environment
+          <h3 className="text-2xl sm:text-3xl font-bold text-red-600 mb-8 flex items-center gap-3">
+            <span className="text-3xl">⚠️</span> Effects on Our Environment
           </h3>
 
           {/* Mobile Swiper */}

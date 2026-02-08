@@ -26,41 +26,80 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="sm:mt-17 bg-gradient-to-b from-green-50 to-white flex flex-col justify-center 
-    items-center min-h-screen text-center px-4">
-      <div className="max-w-3xl">
-        <Leaf className="w-14 h-14 text-green-600 mx-auto mb-4 animate-bounce" />
+    <section className="pt-24 bg-gradient-to-b from-emerald-50 via-white to-transparent flex flex-col justify-center items-center min-h-screen text-center px-4 overflow-hidden relative">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-72 h-72 bg-emerald-200/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-green-200/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+      </div>
 
-        <h1 className="font-extrabold text-[28px] sm:text-[48px] lg:text-[56px] text-gray-900 leading-tight">
+      <div className="max-w-3xl relative z-10">
+        <div className="mb-6 inline-block">
+          <div className="p-4 rounded-full bg-gradient-to-br from-emerald-100 to-green-100 animate-glow">
+            <Leaf className="w-12 h-12 text-emerald-600 animate-float" />
+          </div>
+        </div>
+
+        <h1 className="font-black text-[32px] sm:text-[48px] lg:text-[64px] text-gray-900 leading-tight mb-4 animate-slide-up">
           Track Your Impact,{" "}
-          <span className="text-green-600">Live a Greener Tomorrow.</span>
+          <span className="gradient-text block">
+            Live a Greener Tomorrow.
+          </span>
         </h1>
 
-        <p className="mt-4 text-gray-700 text-base sm:text-lg">
+        <p className="mt-6 text-gray-700 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: '0.1s' }}>
           EcoTracker helps you monitor, reduce, and celebrate your eco-friendly
           actions. Make sustainability a habit, one step at a time.
         </p>
 
-        <div className="mt-6 flex flex-row gap-4 justify-center">
+        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style={{ animationDelay: '0.2s' }}>
           {!user ? (
             <Link href="/auth">
-              <button className="cursor-pointer bg-green-600 text-white px-6 py-3 rounded-md font-medium hover:bg-green-700 transition">
-                Get Started
+              <button className="btn-primary group">
+                <span className="flex items-center gap-2">
+                  Get Started
+                  <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+                </span>
               </button>
             </Link>
           ) : (
             <Link href="/profile">
-              <button className="cursor-pointer bg-green-600 text-white px-6 py-3 rounded-md font-medium hover:bg-green-700 transition">
-              Visit your Profile
+              <button className="btn-primary group">
+                <span className="flex items-center gap-2">
+                  Visit your Profile
+                  <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+                </span>
               </button>
             </Link>
           )}
 
           <Link href="/about">
-            <button className="cursor-pointer border border-green-600 text-green-600 px-6 py-3 rounded-md font-medium hover:bg-green-100 transition">
+            <button className="btn-secondary group">
               Learn More
             </button>
           </Link>
+        </div>
+
+        {/* Stats */}
+        <div className="mt-16 grid grid-cols-3 gap-4 sm:gap-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+          <div className="card-blur p-4 sm:p-6">
+            <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+              10M+
+            </p>
+            <p className="text-xs sm:text-sm text-gray-600 mt-2">Active Eco-Warriors</p>
+          </div>
+          <div className="card-blur p-4 sm:p-6">
+            <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+              50K+
+            </p>
+            <p className="text-xs sm:text-sm text-gray-600 mt-2">Carbon Saved (Tons)</p>
+          </div>
+          <div className="card-blur p-4 sm:p-6">
+            <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+              195+
+            </p>
+            <p className="text-xs sm:text-sm text-gray-600 mt-2">Countries Reached</p>
+          </div>
         </div>
       </div>
     </section>
