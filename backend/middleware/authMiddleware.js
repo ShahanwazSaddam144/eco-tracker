@@ -1,8 +1,10 @@
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 const User = require("../Database/auth");
 
-const JWT_SECRET = process.env.JWT_SECRET || "aabc6a9cfcfc05011de1978688bea7e28a045a9fa2fce2c15038c24a1a26e67f";
+dotenv.config();
 
+const JWT_SECRET = process.env.JWT_SECRET; 
 const authMiddleware = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;

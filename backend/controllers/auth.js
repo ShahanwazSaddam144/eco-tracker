@@ -1,13 +1,15 @@
 const express = require("express");
 const User = require("../Database/auth");
 const bcrypt = require("bcryptjs");
+const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const { sendVerificationEmail } = require("../utils/sendEmail");
 const {authMiddleware} = require("../middleware/authMiddleware");
 
+dotenv.config();
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "aabc6a9cfcfc05011de1978688bea7e28a045a9fa2fce2c15038c24a1a26e67f";
+const JWT_SECRET = process.env.JWT_SECRET; 
 
 router.post("/signin", async (req, res) => {
   try {
