@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const trackerSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    email: {type:String},
     transport: { type: String, required: true },
     electricity: { type: String, required: true },
     plastic: { type: String, required: true },

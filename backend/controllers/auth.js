@@ -7,7 +7,7 @@ const {authMiddleware} = require("../middleware/authMiddleware");
 
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || "aabc6a9cfcfc05011de1978688bea7e28a045a9fa2fce2c15038c24a1a26e67f";
 
 router.post("/signin", async (req, res) => {
   try {
