@@ -95,12 +95,14 @@ const Navbar = () => {
               </button>
             ) : (
               <div className="flex items-center gap-3">
+                <Link href={"/profile"}>
                 <div
                   title={user.name}
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-green-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
                 >
                   {getInitials(user.name)}
                 </div>
+                </Link>
                 <button
                   onClick={() => setPop(true)}
                   className="flex items-center gap-2 text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
@@ -143,10 +145,12 @@ const Navbar = () => {
             ) : (
               <div className="flex items-center justify-between mt-2 p-3 bg-white/50 rounded-lg">
                 <div className="flex items-center gap-2">
+                  <Link href={"/profile"}>
                   <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 text-white flex items-center justify-center shadow-md">
                     {getInitials(user.name)}
                   </div>
                   <span className="text-sm font-semibold">{user.name}</span>
+                  </Link>
                 </div>
                 <button
                   onClick={() => setPop(true)}

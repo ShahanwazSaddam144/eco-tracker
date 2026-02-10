@@ -135,4 +135,18 @@ router.post("/logout", authMiddleware, async (req, res) => {
   }
 });
 
+router.delete("/delete", authMiddleware, async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.user._id);
+
+    res.status(200).json({
+      success: true,
+      message: "Account deleted successfully",
+    });
+  } catch (err) {
+    console.error("Delete Account Error:", err);
+    res.status(500).json({ message: "Failed to delete account" });
+  }
+});
+
 module.exports = router;

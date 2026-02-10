@@ -50,4 +50,23 @@ router.post("/badges", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/my-badges", authMiddleware, async (req, res) => {
+  try {
+    const data = await Badges.find({
+      user: req.user._id,
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data,
+    });
+  } catch (err) {
+    console.log("Error fetching user badges", err);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+});
+
 module.exports = router;
