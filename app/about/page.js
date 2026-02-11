@@ -2,30 +2,17 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Globe, BarChart2, Award, Leaf, Users } from "lucide-react";
+import { Globe, BarChart2, Award, Leaf } from "lucide-react";
+import Image from "next/image";
 import Navbar from "../components/Navbar";
+import Link from "next/link";
 
 const About = () => {
   const team = [
     {
       name: "Shahnawaz Saddam Butt",
       role: "Lead Developer & Eco Advocate",
-      emoji: "💻",
-    },
-    {
-      name: "Ayesha",
-      role: "Team Member",
-      emoji: "🌱",
-    },
-    {
-      name: "Bilal",
-      role: "Team Member",
-      emoji: "🌿",
-    },
-    {
-      name: "Fatima",
-      role: "Team Member",
-      emoji: "🌎",
+      image: "/developer.jpg",
     },
   ];
 
@@ -33,188 +20,204 @@ const About = () => {
     <>
       <Navbar />
 
-      {/* HERO / Header */}
-      <section className="bg-green-100 text-center py-24 px-8">
-        <motion.h1 
-          className="text-5xl font-bold text-green-900"
+      {/* HERO */}
+      <section className="relative bg-gradient-to-br from-green-100 via-green-50 to-white text-center py-28 px-8 overflow-hidden">
+        
+        {/* Decorative blur circles */}
+        <div className="absolute top-10 left-10 w-40 h-40 bg-green-300/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 right-10 w-60 h-60 bg-emerald-200/40 rounded-full blur-3xl"></div>
+
+        <motion.h1
+          className="text-5xl sm:text-6xl font-extrabold text-green-900 relative z-10"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          About EcoTracker
+          About EcoTracker 🌍
         </motion.h1>
-        <motion.p 
-          className="mt-6 text-lg text-green-700 max-w-2xl mx-auto"
+
+        <motion.p
+          className="mt-6 text-lg sm:text-xl text-green-800 max-w-3xl mx-auto relative z-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          Learn who we are, why we exist, and how we help people make sustainable choices every day.
+          We help people transform everyday eco-actions into measurable impact.
+          Small changes. Big difference.
         </motion.p>
       </section>
 
-      {/* OUR MISSION */}
-      <section className="py-20 px-8 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.h2 
-            className="text-3xl font-semibold text-green-800"
+      {/* MISSION */}
+      <section className="py-24 px-8 bg-white">
+        <div className="max-w-5xl mx-auto text-center">
+          <motion.h2
+            className="text-4xl font-bold text-green-800"
             initial={{ x: -50, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
           >
-            Our Mission
+            🌱 Our Mission
           </motion.h2>
-          <motion.p 
-            className="mt-4 text-gray-700 text-lg"
+
+          <motion.p
+            className="mt-6 text-gray-700 text-lg leading-relaxed"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            At EcoTracker, our mission is to empower you to track your eco-friendly actions with data-driven insights — helping you reduce your carbon footprint and celebrate every step towards a greener future. We believe small daily actions add up to big global change.
+            EcoTracker empowers individuals to monitor sustainable actions using
+            real data insights — helping reduce carbon footprints and celebrate
+            eco achievements. We believe daily habits create global transformation.
           </motion.p>
         </div>
       </section>
 
-      {/* WHY ECO TRACKER */}
-      <section className="bg-green-50 py-20 px-8">
+      {/* FEATURES */}
+      <section className="bg-gradient-to-b from-green-50 to-white py-24 px-8">
         <div className="max-w-6xl mx-auto text-center">
-          <motion.h2 
-            className="text-3xl font-semibold text-green-800"
-            initial={{ y: -50, opacity: 0 }}
+          <motion.h2
+            className="text-4xl font-bold text-green-800"
+            initial={{ y: -40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
           >
             Why EcoTracker?
           </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12">
-            <motion.div 
-              className="text-center bg-white p-8 rounded-xl shadow hover:scale-105 transition-transform duration-300"
-              whileHover={{ scale: 1.05 }}
-            >
-              <Globe className="mx-auto text-green-600" size={48} />
-              <h3 className="mt-4 text-xl font-medium text-green-700">Track Impact</h3>
-              <p className="text-gray-700 mt-2">
-                See your eco actions turn into measurable impact you can be proud of.
-              </p>
-            </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-16">
 
-            <motion.div 
-              className="text-center bg-white p-8 rounded-xl shadow hover:scale-105 transition-transform duration-300"
-              whileHover={{ scale: 1.05 }}
-            >
-              <BarChart2 className="mx-auto text-green-600" size={48} />
-              <h3 className="mt-4 text-xl font-medium text-green-700">Data Insights</h3>
-              <p className="text-gray-700 mt-2">
-                Visualize causes & effects of environmental tension clearly and intuitively.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              className="text-center bg-white p-8 rounded-xl shadow hover:scale-105 transition-transform duration-300"
-              whileHover={{ scale: 1.05 }}
-            >
-              <Award className="mx-auto text-green-600" size={48} />
-              <h3 className="mt-4 text-xl font-medium text-green-700">Earn Badges</h3>
-              <p className="text-gray-700 mt-2">
-                Stay motivated by unlocking achievements for your actions.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* OUR VALUES */}
-      <section className="py-20 px-8 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.h2 
-            className="text-3xl font-semibold text-green-800"
-            initial={{ x: 50, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            Our Core Values
-          </motion.h2>
-          <motion.ul 
-            className="mt-8 text-lg text-gray-700 list-disc list-inside space-y-3"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-          >
-            <li>Environmental Awareness & Education</li>
-            <li>Data‑Driven Sustainable Actions</li>
-            <li>Community & Collective Progress</li>
-            <li>Accessibility for All</li>
-          </motion.ul>
-        </div>
-      </section>
-
-      {/* TEAM */}
-      <section className="bg-green-50 py-20 px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.h2 
-            className="text-3xl font-semibold text-green-800"
-            initial={{ y: -50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            Meet the Team
-          </motion.h2>
-          <p className="text-gray-700 mt-2">
-            Passionate developers & eco advocates behind this project.
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 mt-10">
-            {team.map((member, idx) => (
-              <motion.div 
-                key={idx}
-                className="bg-white shadow p-6 rounded-xl text-center hover:scale-105 transition-transform duration-300"
+            {[{
+              icon: <Globe size={42} />,
+              title: "Track Impact",
+              desc: "Measure your eco actions and visualize real-world environmental impact."
+            },
+            {
+              icon: <BarChart2 size={42} />,
+              title: "Data Insights",
+              desc: "Interactive dashboards that turn sustainability into clear insights."
+            },
+            {
+              icon: <Award size={42} />,
+              title: "Earn Achievements",
+              desc: "Stay motivated with rewards, milestones & eco badges."
+            }].map((item, i) => (
+              <motion.div
+                key={i}
                 whileHover={{ scale: 1.05 }}
-              >
-                <div className="w-24 h-24 bg-green-200 rounded-full mx-auto text-3xl flex items-center justify-center">
-                  {member.emoji}
+                className="backdrop-blur-lg bg-white/70 border-2 border-gray-300 shadow-xl 
+                p-10 rounded-2xl transition duration-300 hover:border-green-300
+                active:border-green-300 cursor-pointer">
+                <div className="text-green-600 flex justify-center">
+                  {item.icon}
                 </div>
-                <h3 className="mt-4 font-medium text-green-700">{member.name}</h3>
-                <p className="text-gray-600 text-sm mt-1">{member.role}</p>
+                <h3 className="mt-5 text-xl font-semibold text-green-800">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-gray-600">{item.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CONTACT CTA */}
-      <section className="bg-green-800 py-16 text-center text-white px-8">
-        <motion.h3 
-          className="text-2xl font-semibold"
+      {/* VALUES */}
+      <section className="py-24 px-8 bg-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.h2
+            className="text-4xl font-bold text-green-800"
+            initial={{ x: 40, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            🌎 Our Core Values
+          </motion.h2>
+
+          <ul className="mt-10 space-y-4 text-lg text-green-900">
+            {[
+              "Environmental Awareness & Education",
+              "Data-Driven Sustainable Actions",
+              "Community & Collective Progress",
+              "Accessibility for Everyone"
+            ].map((value, index) => (
+              <li
+                key={index}
+                className="bg-green-50 py-3 px-6 rounded-xl shadow-sm hover:shadow-md transition"
+              >
+                {value}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* TEAM */}
+      <section className="bg-green-50 py-24 px-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <motion.h2
+            className="text-4xl font-bold text-green-800"
+            initial={{ y: -40, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            👨‍💻 Meet the Creator
+          </motion.h2>
+
+          <div className="flex justify-center mt-14">
+            {team.map((member, idx) => (
+              <motion.div
+                key={idx}
+                whileHover={{ scale: 1.05 }}
+                className="bg-white shadow-2xl p-8 rounded-2xl text-center border border-green-100 max-w-sm"
+              >
+                <Image
+                  src={member.image}
+                  alt="Developer"
+                  width={120}
+                  height={120}
+                  className="rounded-full mx-auto border-4 border-green-200"
+                />
+                <h3 className="mt-6 text-xl font-bold text-green-800">
+                  {member.name}
+                </h3>
+                <p className="text-gray-600">{member.role}</p>
+
+                <a
+                  href="https://shahnawaz.buttnetworks.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <button className="mt-6 px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+                    Visit Portfolio
+                  </button>
+                </a>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-gradient-to-r from-green-600 to-emerald-500 py-20 text-center px-8 text-white">
+        <motion.h3
+          className="text-3xl sm:text-4xl font-bold"
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
         >
-          Want to collaborate or talk sustainability?
+          Ready to Build a Greener Future? 🌿
         </motion.h3>
-        <motion.p 
-          className="mt-2"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-        >
-          Reach out and let’s make an impact together.
-        </motion.p>
-        <motion.a 
-          href="mailto:contact@eco.buttnetworks.com"
-          className="inline-block mt-6 bg-white text-green-800 font-semibold px-6 py-3 rounded shadow hover:bg-green-100 transition-colors duration-300"
-          whileHover={{ scale: 1.05 }}
+
+        <p className="mt-4 text-lg text-green-100">
+          Let’s collaborate and make sustainability smarter.
+        </p>
+
+        <Link
+          href="/"
+          className="inline-block mt-8 bg-white text-green-700 font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-green-100 transition"
         >
           Contact Us
-        </motion.a>
+        </Link>
       </section>
     </>
   );

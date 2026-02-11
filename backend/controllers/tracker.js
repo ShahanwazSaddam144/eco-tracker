@@ -59,6 +59,58 @@ router.get("/tracker", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/profile-tracker", authMiddleware, async (req, res) => {
+  try {
+    const result = await Tracker.aggregate([
+      {
+        $match: { user: req.user._id }
+      },
+      {
+        $group: {
+          _id: "$transport", 
+          totalEcoScore: { $sum: "$ecoScore" },
+          transportCount: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { transportCount: -1 }
+      }
+    ]);
+
+    if (!result.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No tracker data found"
+      });
+    }
+    
+    const totalData = await Tracker.aggregate([
+      {
+        $match: { user: req.user._id }
+      },
+      {
+        $group: {
+          _id: null,
+          totalEcoScore: { $sum: "$ecoScore" }
+        }
+      }
+    ]);
+
+    res.status(200).json({
+      success: true,
+      email: req.user.email,
+      totalEcoScore: totalData[0]?.totalEcoScore || 0,
+      mostUsedTransport: result[0]._id,
+      transportUsageCount: result[0].transportCount
+    });
+
+  } catch (err) {
+    console.log("Profile Tracker Fetch error:", err);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+
 router.get("/leaderboard-tracker", async (req, res) => {
   try {
     const sevenDaysAgo = new Date();
