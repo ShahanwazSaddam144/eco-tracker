@@ -73,7 +73,8 @@ const LeaderBoard = () => {
               <Trophy className="w-10 h-10 text-yellow-500 animate-bounce" style={{ animationDelay: "0.1s" }} />
             </div>
             <p className="text-gray-700 text-lg max-w-2xl mx-auto">
-              🌍 Celebrate the world's top eco-warriors. See who's making the biggest environmental impact!
+              🌍 Celebrate the world's top eco-warriors.
+              See who's making the biggest environmental impact!
             </p>
           </motion.div>
 
@@ -209,7 +210,7 @@ const LeaderBoard = () => {
             className="text-center mt-12"
           >
             <p className="text-gray-600 text-sm">
-              🎯 Keep tracking your eco-friendly actions to climb the global rankings!
+              🎯 It is data of one week only and after one week data is refresh.
             </p>
           </motion.div>
         </div>

@@ -1,4 +1,5 @@
 import CausesAndEffect from "./components/CausesAndEffect";
+import Contact from "./components/Contact";
 import Hero from "./components/Hero";
 import LiveStatsSection from "./components/LiveStats";
 import Navbar from "./components/Navbar";
@@ -15,6 +16,7 @@ export default function Home() {
     <Tracker />
     <LiveStatsSection />
     <Badges />
+    <Contact />
     </>
   );
 }
