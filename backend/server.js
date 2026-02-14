@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const Auth = require("./controllers/auth");
 const Tracker = require("./controllers/tracker");
 const Badge = require("./controllers/badges");
+const Contact = require("./controllers/contact");
 const Port = process.env.PORT || 5000;
 const app = express();
 
@@ -30,6 +31,7 @@ const limiter = rateLimit({
 app.use("/api/auth", Auth, limiter);
 app.use("/api", Tracker, limiter);
 app.use("/api", Badge, limiter);
+app.use("/api", Contact, limiter);
 
 // Mongoose connect
 mongoose
