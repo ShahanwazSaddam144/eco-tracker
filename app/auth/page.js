@@ -130,6 +130,31 @@ const AuthPage = () => {
     }
   };
 
+  useEffect(() => {
+  const checkAuth = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        router.replace("/");
+      } else {
+        localStorage.removeItem("token"); 
+      }
+    } catch {
+      localStorage.removeItem("token");
+    }
+  };
+
+  checkAuth();
+}, [router]);
+
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 px-4 py-12 overflow-hidden relative">
       {/* Animated Background Elements */}
