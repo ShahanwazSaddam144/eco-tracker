@@ -172,7 +172,8 @@ export default function Tracker() {
   };
 
   return (
-    <section className="bg-gradient-to-b from-white via-emerald-50/50 to-white py-24 px-4 relative overflow-hidden">
+    <section className="bg-gradient-to-b from-white via-emerald-50/50 to-white py-24 px-4 relative overflow-hidden"
+    id="tracker">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-20 -right-20 w-72 h-72 bg-emerald-100/20 rounded-full blur-3xl"></div>

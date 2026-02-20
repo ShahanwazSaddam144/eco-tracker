@@ -4,12 +4,13 @@ const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const { sendVerificationEmail } = require("../utils/sendEmail");
-const {authMiddleware} = require("../middleware/authMiddleware");
+const { authMiddleware } = require("../middleware/authMiddleware");
 
 dotenv.config();
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET; 
+const JWT_SECRET = process.env.JWT_SECRET;
+
 
 router.post("/signin", async (req, res) => {
   try {
@@ -55,6 +56,7 @@ router.post("/signin", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 router.get("/verify/:token", async (req, res) => {
   try {
@@ -123,6 +125,7 @@ router.get("/me", authMiddleware, async (req, res) => {
   });
 });
 
+
 router.post("/logout", authMiddleware, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((t) => t.token !== req.token);
@@ -134,6 +137,7 @@ router.post("/logout", authMiddleware, async (req, res) => {
     res.status(500).json({ message: "Logout failed" });
   }
 });
+
 
 router.delete("/delete", authMiddleware, async (req, res) => {
   try {

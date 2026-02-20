@@ -6,9 +6,35 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
+// Spinner component
 const Spinner = () => (
   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
 );
+
+// ✅ Custom Toast Component
+const Toast = ({ message, type, onClose }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      className={`fixed top-6 right-6 z-50 min-w-[250px] px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 text-sm font-medium transition-all ${
+        type === "success"
+          ? "bg-green-50 border border-green-400 text-green-700"
+          : "bg-red-50 border border-red-400 text-red-700"
+      }`}
+    >
+      {type === "success" ? <CircleCheck size={20} /> : <CircleX size={20} />}
+      <span>{message}</span>
+      <button
+        className="ml-auto text-gray-400 hover:text-gray-700"
+        onClick={onClose}
+      >
+        ✕
+      </button>
+    </motion.div>
+  );
+};
 
 const AuthPage = () => {
   const router = useRouter();
@@ -22,26 +48,29 @@ const AuthPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [errors, setErrors] = useState({});
-  const [popup, setPopup] = useState({ message: "", type: "" });
+  const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) router.replace("/");
   }, [router]);
 
-  useEffect(() => {
-    if (popup.message) {
-      const timer = setTimeout(() => {
-        setPopup({ message: "", type: "" });
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [popup]);
+  // Add a toast message
+  const addToast = (message, type = "success") => {
+    const id = Date.now();
+    setToasts((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => removeToast(id), 4000); // auto dismiss
+  };
 
+  // Remove toast
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  // Handle login/signup submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    setPopup({ message: "", type: "" });
 
     const newErrors = {};
     if (!isLogin && !name) newErrors.name = "Name is required";
@@ -50,10 +79,7 @@ const AuthPage = () => {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      setPopup({
-        message: "Please fill all required fields correctly.",
-        type: "error",
-      });
+      addToast("Please fill all required fields correctly.", "error");
       return;
     }
 
@@ -82,180 +108,246 @@ const AuthPage = () => {
       }
 
       if (!res.ok) {
-        setPopup({
-          message: data.message || "Invalid credentials or server error.",
-          type: "error",
-        });
+        addToast(data.message || "Invalid credentials or server error.", "error");
         setIsLoading(false);
         return;
       }
 
       if (isLogin) {
         localStorage.setItem("token", data.token);
-        setPopup({ message: "Login successful!", type: "success" });
+        addToast("Login successful!", "success");
         setTimeout(() => router.replace("/"), 600);
       } else {
-        setPopup({
-          message: "Account created! Please verify your email.",
-          type: "success",
-        });
+        addToast("Account created! Please verify your email.", "success");
         setName("");
         setEmail("");
         setPassword("");
       }
     } catch {
-      setPopup({
-        message: "Server error. Try again later.",
-        type: "error",
-      });
+      addToast("Server error. Try again later.", "error");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 px-4 py-12 overflow-hidden relative">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-200/20 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-green-200/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+      </div>
+
+      {/* Custom Toast Container */}
+      <AnimatePresence>
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </AnimatePresence>
+
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-6xl flex flex-col-reverse md:flex-row rounded-2xl shadow-2xl overflow-hidden bg-white"
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="w-full max-w-6xl flex flex-col-reverse md:flex-row rounded-3xl shadow-2xl overflow-hidden bg-white/95 backdrop-blur-sm border border-white/40 relative z-10"
       >
-        <div className="hidden md:flex flex-col justify-center w-full md:w-1/2 bg-green-50 p-8 md:p-12 space-y-6 order-2 md:order-1">
-          <Leaf className="w-14 h-14 text-green-600 animate-bounce" />
-          <Link href="/">
-            <h2 className="text-4xl font-extrabold text-green-600">
-              EcoTracker
-            </h2>
-          </Link>
-          <p className="text-green-700 text-lg leading-relaxed">
+        {/* LEFT SIDE - BRANDING & INFO */}
+        <div className="hidden md:flex flex-col justify-center w-full md:w-1/2 bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50/30 p-8 md:p-12 space-y-6 order-2 md:order-1">
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="w-fit p-3 rounded-full bg-gradient-to-br from-emerald-400 to-green-500 animate-glow"
+          >
+            <Leaf className="w-14 h-14 text-white animate-float" />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <Link href="/">
+              <h2 className="text-4xl font-extrabold gradient-text cursor-pointer hover:scale-105 transition-transform">
+                EcoTracker
+              </h2>
+            </Link>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="text-emerald-700 text-lg leading-relaxed font-medium"
+          >
             Track your environmental impact and live sustainably. Monitor your
             energy use, transportation, and plastic footprint to make greener
             choices every day.
-          </p>
-          <ul className="list-disc list-inside text-green-700 space-y-2 text-lg">
-            <li>Track daily eco habits</li>
-            <li>Visualize your impact with charts</li>
-            <li>Set and achieve sustainability goals</li>
-          </ul>
+          </motion.p>
+
+          <motion.ul
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="list-disc list-inside text-emerald-700 space-y-3 text-lg font-medium"
+          >
+            <li>📊 Track daily eco habits</li>
+            <li>📈 Visualize your impact with charts</li>
+            <li>🎯 Set and achieve sustainability goals</li>
+            <li>🏆 Earn badges for eco-friendly actions</li>
+          </motion.ul>
         </div>
 
-        <div className="w-full md:w-1/2 p-10 md:p-12 flex flex-col justify-center order-1 md:order-2">
-          <div className="mb-6 text-center">
-            <h1 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-1">
-              {isLogin ? "Login to EcoTracker" : "Create your account"}
+        {/* RIGHT SIDE - FORM */}
+        <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center order-1 md:order-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mb-8 text-center"
+          >
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-2">
+              {isLogin ? "Welcome Back" : "Join EcoTracker"}
             </h1>
             <p className="text-sm text-gray-500">
-              Track your impact. Live greener.
+              {isLogin ? "Track your eco journey" : "Start your sustainability journey"}
             </p>
-          </div>
+          </motion.div>
 
-          <AnimatePresence>
-            {popup.message && (
-              <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                className={`px-4 py-3 rounded-md flex gap-2 text-sm mb-4 ${
-                  popup.type === "success"
-                    ? "bg-green-50 border border-green-300 text-green-700"
-                    : "bg-red-50 border border-red-300 text-red-700"
-                }`}
-              >
-                {popup.type === "success" ? (
-                  <CircleCheck size={18} />
-                ) : (
-                  <CircleX size={18} />
-                )}
-                {popup.message}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             {!isLogin && (
-              <div>
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
                 <input
                   type="text"
                   placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-1 transition"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 bg-gray-50/50 hover:bg-gray-50"
                 />
                 {errors.name && (
-                  <p className="text-xs text-red-600 mt-1">{errors.name}</p>
+                  <motion.p
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-xs text-red-600 mt-2 flex items-center gap-1"
+                  >
+                    <span>⚠️</span> {errors.name}
+                  </motion.p>
                 )}
-              </div>
+              </motion.div>
             )}
 
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+            >
               <input
                 type="email"
-                placeholder="Email"
+                placeholder="Email Address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-1 transition"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 bg-gray-50/50 hover:bg-gray-50"
               />
               {errors.email && (
-                <p className="text-xs text-red-600 mt-1">{errors.email}</p>
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-xs text-red-600 mt-2 flex items-center gap-1"
+                >
+                  <span>⚠️</span> {errors.email}
+                </motion.p>
               )}
-            </div>
+            </motion.div>
 
-            <div className="relative">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="relative"
+            >
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border rounded-lg pr-10 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-1 transition"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl pr-10 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300 bg-gray-50/50 hover:bg-gray-50"
               />
-              <button
+              <motion.button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-green-600"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-emerald-600 transition-colors"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
+              </motion.button>
               {errors.password && (
-                <p className="text-xs text-red-600 mt-1">
-                  {errors.password}
-                </p>
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-xs text-red-600 mt-2 flex items-center gap-1"
+                >
+                  <span>⚠️</span> {errors.password}
+                </motion.p>
               )}
-            </div>
+            </motion.div>
 
-            <button
+            <motion.button
               type="submit"
               disabled={isLoading}
-              className="bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg flex justify-center gap-2 transition text-lg font-medium"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.45 }}
+              className="btn-primary w-full flex justify-center gap-2 mt-2"
             >
               {isLoading && <Spinner />}
-              {isLogin ? "Login" : "Sign Up"}
-            </button>
+              <span>{isLogin ? "Login" : "Create Account"}</span>
+            </motion.button>
           </form>
 
-          <div className="text-center mt-6 text-sm md:text-base">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="text-center mt-8 text-sm md:text-base text-gray-600"
+          >
             {isLogin ? (
               <>
-                Don’t have an account?{" "}
-                <button
+                Don't have an account?{" "}
+                <motion.button
                   onClick={() => setIsLogin(false)}
-                  className="text-green-600 hover:text-green-700 font-medium"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="text-emerald-600 hover:text-emerald-700 font-semibold hover:underline transition-colors"
                 >
                   Sign up
-                </button>
+                </motion.button>
               </>
             ) : (
               <>
                 Already have an account?{" "}
-                <button
+                <motion.button
                   onClick={() => setIsLogin(true)}
-                  className="text-green-600 hover:text-green-700 font-medium"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="text-emerald-600 hover:text-emerald-700 font-semibold hover:underline transition-colors"
                 >
                   Login
-                </button>
+                </motion.button>
               </>
             )}
-          </div>
+          </motion.div>
         </div>
       </motion.div>
     </section>

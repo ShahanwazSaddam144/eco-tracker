@@ -2,12 +2,98 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Globe, BarChart2, Award, Leaf } from "lucide-react";
+import {
+  Globe,
+  BarChart2,
+  Award,
+  Leaf,
+  Target,
+  Users,
+  Lightbulb,
+  Heart,
+  ArrowRight,
+  Zap,
+} from "lucide-react";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
 
 const About = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 },
+    },
+    hover: {
+      y: -10,
+      boxShadow: "0 20px 40px rgba(16, 185, 129, 0.15)",
+      transition: { duration: 0.3 },
+    },
+  };
+
+  const features = [
+    {
+      icon: <Globe size={48} />,
+      title: "Track Impact",
+      desc: "Measure your eco actions and visualize real-world environmental impact with precision.",
+    },
+    {
+      icon: <BarChart2 size={48} />,
+      title: "Data Insights",
+      desc: "Interactive dashboards that turn sustainability into clear, actionable insights.",
+    },
+    {
+      icon: <Award size={48} />,
+      title: "Earn Achievements",
+      desc: "Stay motivated with rewards, milestones & exclusive eco badges.",
+    },
+  ];
+
+  const values = [
+    {
+      icon: <Target size={24} />,
+      title: "Environmental Awareness",
+      desc: "Education through action",
+    },
+    {
+      icon: <Zap size={24} />,
+      title: "Data-Driven Actions",
+      desc: "Measurable sustainability",
+    },
+    {
+      icon: <Users size={24} />,
+      title: "Community Power",
+      desc: "Collective global impact",
+    },
+    {
+      icon: <Heart size={24} />,
+      title: "Accessibility",
+      desc: "For everyone, everywhere",
+    },
+  ];
+
   const team = [
     {
       name: "Shahnawaz Saddam Butt",
@@ -20,204 +106,518 @@ const About = () => {
     <>
       <Navbar />
 
-      {/* HERO */}
-      <section className="relative bg-gradient-to-br from-green-100 via-green-50 to-white text-center py-28 px-8 overflow-hidden">
-        
-        {/* Decorative blur circles */}
-        <div className="absolute top-10 left-10 w-40 h-40 bg-green-300/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-60 h-60 bg-emerald-200/40 rounded-full blur-3xl"></div>
+      {/* HERO SECTION */}
+      <section className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 flex items-center justify-center overflow-hidden px-4 py-20">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            animate={{ y: [0, -20, 0] }}
+            transition={{ duration: 8, repeat: Infinity }}
+            className="absolute top-20 left-10 w-96 h-96 bg-emerald-200/20 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{ y: [0, 20, 0] }}
+            transition={{ duration: 10, repeat: Infinity }}
+            className="absolute bottom-20 right-10 w-96 h-96 bg-green-200/20 rounded-full blur-3xl"
+          />
+        </div>
 
-        <motion.h1
-          className="text-5xl sm:text-6xl font-extrabold text-green-900 relative z-10"
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8 }}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="max-w-4xl mx-auto text-center relative z-10"
         >
-          About EcoTracker 🌍
-        </motion.h1>
-
-        <motion.p
-          className="mt-6 text-lg sm:text-xl text-green-800 max-w-3xl mx-auto relative z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          We help people transform everyday eco-actions into measurable impact.
-          Small changes. Big difference.
-        </motion.p>
-      </section>
-
-      {/* MISSION */}
-      <section className="py-24 px-8 bg-white">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.h2
-            className="text-4xl font-bold text-green-800"
-            initial={{ x: -50, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true }}
+          <motion.div
+            variants={itemVariants}
+            className="mb-6 flex justify-center"
           >
-            🌱 Our Mission
-          </motion.h2>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="p-4 rounded-full bg-gradient-to-br from-emerald-400 to-green-500 animate-glow"
+            >
+              <Leaf className="w-12 h-12 text-white" />
+            </motion.div>
+          </motion.div>
+
+          <motion.h1
+            variants={itemVariants}
+            className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight mb-6"
+          >
+            <span className="gradient-text block">About EcoTracker</span>
+            <span className="text-gray-700">Transforming Tomorrow</span>
+          </motion.h1>
 
           <motion.p
-            className="mt-6 text-gray-700 text-lg leading-relaxed"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+            variants={itemVariants}
+            className="text-lg sm:text-xl text-gray-700 mb-8 leading-relaxed max-w-2xl mx-auto"
           >
-            EcoTracker empowers individuals to monitor sustainable actions using
-            real data insights — helping reduce carbon footprints and celebrate
-            eco achievements. We believe daily habits create global transformation.
+            We empower individuals to track, understand, and celebrate their
+            environmental impact. Every action counts. Every person matters.
           </motion.p>
-        </div>
+
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <Link href="/auth">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="btn-primary flex items-center gap-2 group"
+              >
+                Start Tracking
+                <ArrowRight
+                  size={20}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
+              </motion.button>
+            </Link>
+          </motion.div>
+        </motion.div>
       </section>
 
-      {/* FEATURES */}
-      <section className="bg-gradient-to-b from-green-50 to-white py-24 px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.h2
-            className="text-4xl font-bold text-green-800"
-            initial={{ y: -40, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+      {/* MISSION SECTION */}
+      <section className="py-20 sm:py-28 px-4 bg-white relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-5xl mx-auto"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Content */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <motion.div
+                variants={itemVariants}
+                className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full bg-emerald-100"
+              >
+                <Leaf size={16} className="text-emerald-600" />
+                <span className="text-sm font-semibold text-emerald-700">
+                  Our Mission
+                </span>
+              </motion.div>
+
+              <motion.h2
+                variants={itemVariants}
+                className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text mb-6"
+              >
+                Empowering Sustainable Living
+              </motion.h2>
+
+              <motion.p
+                variants={itemVariants}
+                className="text-gray-700 text-lg leading-relaxed mb-6"
+              >
+                EcoTracker empowers individuals to monitor sustainable actions
+                using real data insights — helping reduce carbon footprints and
+                celebrate eco achievements. We believe daily habits create
+                global transformation.
+              </motion.p>
+
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
+                {[
+                  "Track daily eco-friendly actions",
+                  "Measure environmental impact",
+                  "Join a global community",
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    variants={itemVariants}
+                    className="flex items-center gap-3"
+                  >
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.1 }}
+                      className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center"
+                    >
+                      <motion.div className="w-2 h-2 bg-emerald-600 rounded-full" />
+                    </motion.div>
+                    <span className="text-gray-700 font-medium">{item}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            {/* Visual */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative h-96 hidden md:block"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-100 to-green-100 rounded-3xl" />
+              <motion.div
+                animate={{ y: [0, -20, 0] }}
+                transition={{ duration: 6, repeat: Infinity }}
+                className="absolute inset-4 bg-gradient-to-br from-emerald-500 to-green-600 rounded-3xl flex items-center justify-center"
+              >
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                  <Leaf className="w-24 h-24 text-white opacity-80" />
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* FEATURES SECTION */}
+      <section className="py-20 sm:py-28 px-4 bg-gradient-to-b from-emerald-50/50 to-white">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="max-w-6xl mx-auto"
+        >
+          <motion.div
+            variants={itemVariants}
+            className="text-center mb-16"
           >
-            Why EcoTracker?
-          </motion.h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text mb-4">
+              Why Choose EcoTracker?
+            </h2>
+            <p className="text-gray-700 text-lg max-w-2xl mx-auto">
+              Comprehensive tools to make environmental tracking simple and
+              rewarding
+            </p>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-16">
-
-            {[{
-              icon: <Globe size={42} />,
-              title: "Track Impact",
-              desc: "Measure your eco actions and visualize real-world environmental impact."
-            },
-            {
-              icon: <BarChart2 size={42} />,
-              title: "Data Insights",
-              desc: "Interactive dashboards that turn sustainability into clear insights."
-            },
-            {
-              icon: <Award size={42} />,
-              title: "Earn Achievements",
-              desc: "Stay motivated with rewards, milestones & eco badges."
-            }].map((item, i) => (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {features.map((feature, i) => (
               <motion.div
                 key={i}
-                whileHover={{ scale: 1.05 }}
-                className="backdrop-blur-lg bg-white/70 border-2 border-gray-300 shadow-xl 
-                p-10 rounded-2xl transition duration-300 hover:border-green-300
-                active:border-green-300 cursor-pointer">
-                <div className="text-green-600 flex justify-center">
-                  {item.icon}
-                </div>
-                <h3 className="mt-5 text-xl font-semibold text-green-800">
-                  {item.title}
+                variants={cardVariants}
+                whileHover="hover"
+                className="group card-blur bg-white/80 backdrop-blur-xl border border-white/40 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300"
+              >
+                <motion.div
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
+                  className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-100 to-green-100 text-emerald-600 mb-6 group-hover:scale-110 transition-transform"
+                >
+                  {feature.icon}
+                </motion.div>
+
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
+                  {feature.title}
                 </h3>
-                <p className="mt-3 text-gray-600">{item.desc}</p>
+                <p className="text-gray-700 leading-relaxed">{feature.desc}</p>
+
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileHover={{ width: "100%" }}
+                  transition={{ duration: 0.3 }}
+                  className="h-1 bg-gradient-to-r from-emerald-400 to-green-600 mt-6 rounded-full"
+                />
               </motion.div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
-      {/* VALUES */}
-      <section className="py-24 px-8 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.h2
-            className="text-4xl font-bold text-green-800"
-            initial={{ x: 40, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
+      {/* VALUES SECTION */}
+      <section className="py-20 sm:py-28 px-4 bg-white relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="max-w-6xl mx-auto"
+        >
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
+            className="text-center mb-16"
           >
-            🌎 Our Core Values
-          </motion.h2>
+            <motion.div
+              variants={itemVariants}
+              className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full bg-emerald-100"
+            >
+              <Heart size={16} className="text-emerald-600" />
+              <span className="text-sm font-semibold text-emerald-700">
+                Our Values
+              </span>
+            </motion.div>
 
-          <ul className="mt-10 space-y-4 text-lg text-green-900">
-            {[
-              "Environmental Awareness & Education",
-              "Data-Driven Sustainable Actions",
-              "Community & Collective Progress",
-              "Accessibility for Everyone"
-            ].map((value, index) => (
-              <li
-                key={index}
-                className="bg-green-50 py-3 px-6 rounded-xl shadow-sm hover:shadow-md transition"
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text mb-4"
+            >
+              Built on Core Principles
+            </motion.h2>
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {values.map((value, i) => (
+              <motion.div
+                key={i}
+                variants={cardVariants}
+                whileHover="hover"
+                className="group card-blur bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl p-6 shadow-lg text-center"
               >
-                {value}
-              </li>
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: i * 0.2 }}
+                  className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-100 to-green-100 text-emerald-600 mb-4 group-hover:scale-125 transition-transform"
+                >
+                  {value.icon}
+                </motion.div>
+
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  {value.title}
+                </h3>
+                <p className="text-sm text-gray-600">{value.desc}</p>
+              </motion.div>
             ))}
-          </ul>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
-      {/* TEAM */}
-      <section className="bg-green-50 py-24 px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.h2
-            className="text-4xl font-bold text-green-800"
-            initial={{ y: -40, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+      {/* TEAM SECTION */}
+      <section className="py-20 sm:py-28 px-4 bg-gradient-to-b from-emerald-50/50 to-white">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto"
+        >
+          <motion.div
+            variants={itemVariants}
+            className="text-center mb-16"
           >
-            👨‍💻 Meet the Creator
-          </motion.h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text mb-4">
+              Meet the Creator
+            </h2>
+            <p className="text-gray-700 text-lg">
+              Passionate developer dedicated to sustainable innovation
+            </p>
+          </motion.div>
 
-          <div className="flex justify-center mt-14">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="flex justify-center"
+          >
             {team.map((member, idx) => (
               <motion.div
                 key={idx}
-                whileHover={{ scale: 1.05 }}
-                className="bg-white shadow-2xl p-8 rounded-2xl text-center border border-green-100 max-w-sm"
+                variants={cardVariants}
+                whileHover="hover"
+                className="card-blur bg-white/80 backdrop-blur-xl border border-white/40 rounded-3xl p-8 sm:p-10 text-center max-w-sm shadow-lg hover:shadow-2xl transition-all"
               >
-                <Image
-                  src={member.image}
-                  alt="Developer"
-                  width={120}
-                  height={120}
-                  className="rounded-full mx-auto border-4 border-green-200"
-                />
-                <h3 className="mt-6 text-xl font-bold text-green-800">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  transition={{ duration: 0.5, type: "spring" }}
+                  className="relative w-32 h-32 mx-auto mb-6"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-green-600 rounded-full blur" />
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    width={120}
+                    height={120}
+                    className="relative rounded-full mx-auto border-4 border-white object-cover"
+                  />
+                </motion.div>
+
+                <motion.h3
+                  variants={itemVariants}
+                  className="text-2xl font-bold gradient-text mb-2"
+                >
                   {member.name}
-                </h3>
-                <p className="text-gray-600">{member.role}</p>
+                </motion.h3>
+                <motion.p
+                  variants={itemVariants}
+                  className="text-gray-700 font-medium mb-6"
+                >
+                  {member.role}
+                </motion.p>
+
+                <motion.p
+                  variants={itemVariants}
+                  className="text-gray-600 text-sm leading-relaxed mb-8"
+                >
+                  Passionate developer with a mission to make environmental
+                  tracking accessible to everyone.
+                </motion.p>
 
                 <a
                   href="https://shahnawaz.buttnetworks.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <button className="mt-6 px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="btn-primary flex items-center gap-2 group mx-auto"
+                  >
                     Visit Portfolio
-                  </button>
+                    <ArrowRight
+                      size={18}
+                      className="group-hover:translate-x-1 transition-transform"
+                    />
+                  </motion.button>
                 </a>
               </motion.div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-gradient-to-r from-green-600 to-emerald-500 py-20 text-center px-8 text-white">
-        <motion.h3
-          className="text-3xl sm:text-4xl font-bold"
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
+      {/* IMPACT STATS */}
+      <section className="py-20 sm:py-28 px-4 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-600 relative overflow-hidden">
+        {/* Animated background */}
+        <motion.div
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 6, repeat: Infinity }}
+          className="absolute inset-0 bg-white/5"
+        />
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true }}
+          className="max-w-6xl mx-auto relative z-10"
         >
-          Ready to Build a Greener Future? 🌿
-        </motion.h3>
+          <motion.div
+            variants={itemVariants}
+            className="text-center mb-12 text-white"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              Our Growing Impact
+            </h2>
+            <p className="text-lg text-emerald-100 max-w-2xl mx-auto">
+              Together, we're making a real difference for our planet
+            </p>
+          </motion.div>
 
-        <p className="mt-4 text-lg text-green-100">
-          Let’s collaborate and make sustainability smarter.
-        </p>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {[
+              { value: "10M+", label: "Active Eco-Warriors" },
+              { value: "50K+", label: "Carbon Saved (Tons)" },
+              { value: "195+", label: "Countries Reached" },
+            ].map((stat, i) => (
+              <motion.div
+                key={i}
+                variants={itemVariants}
+                className="text-center text-white"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  transition={{ delay: i * 0.2, type: "spring" }}
+                  className="text-4xl sm:text-5xl md:text-6xl font-black mb-3"
+                >
+                  {stat.value}
+                </motion.div>
+                <p className="text-lg text-emerald-100">{stat.label}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </section>
 
-        <Link
-          href="/"
-          className="inline-block mt-8 bg-white text-green-700 font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-green-100 transition"
+      {/* CTA SECTION */}
+      <section className="py-20 sm:py-28 px-4 bg-gradient-to-b from-white to-emerald-50/30 relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto text-center"
         >
-          Contact Us
-        </Link>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text mb-6"
+            >
+              Ready to Make a Difference?
+            </motion.h2>
+
+            <motion.p
+              variants={itemVariants}
+              className="text-lg text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed"
+            >
+              Join thousands of eco-warriors tracking their impact and building
+              a sustainable future. Start your journey today.
+            </motion.p>
+
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <Link href="/auth">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-primary flex items-center gap-2 group"
+                >
+                  Get Started Now
+                  <ArrowRight
+                    size={20}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
+                </motion.button>
+              </Link>
+
+              <a href="#contact">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-secondary flex items-center gap-2"
+                >
+                  Contact Us
+                </motion.button>
+              </a>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </section>
     </>
   );

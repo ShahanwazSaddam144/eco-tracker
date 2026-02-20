@@ -38,4 +38,4 @@ const sendVerificationEmail = async (to, name, verifyUrl) => {
   return transporter.sendMail(mailOptions);
 };
 
-module.exports = { sendVerificationEmail };
+module.exports = {sendVerificationEmail} ;
