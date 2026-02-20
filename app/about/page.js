@@ -165,12 +165,12 @@ const About = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-primary flex items-center gap-2 group"
+                className="btn-primary flex items-center gap-2 block m-auto group"
               >
                 Start Tracking
                 <ArrowRight
                   size={20}
-                  className="group-hover:translate-x-1 transition-transform"
+                  className="group-hover:translate-x-1  transition-transform"
                 />
               </motion.button>
             </Link>
@@ -590,7 +590,7 @@ const About = () => {
 
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              className="flex flex-col sm:flex-row gap-4 items-center justify-center"
             >
               <Link href="/auth">
                 <motion.button

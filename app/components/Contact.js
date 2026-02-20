@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useState } from "react";
 import {
   Leaf,
   Globe,
@@ -14,10 +13,7 @@ import {
 } from "lucide-react";
 
 const Contact = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   const [loading, setLoading] = useState(false);
-
   const [popup, setPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupSuccess, setPopupSuccess] = useState(true);
@@ -67,60 +63,53 @@ const Contact = () => {
     <>
       <section
         id="contact"
-        className="w-full min-h-screen bg-gradient-to-b from-green-50 to-white py-20 px-6 md:px-16"
-        ref={ref}
+        className="w-full bg-gradient-to-b from-green-50 to-white py-16 px-4 sm:px-6 md:px-12"
       >
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-start">
           
-          {/* LEFT SIDE - COMPANY INFO */}
-          <motion.div
-            initial={{ opacity: 0, x: -80 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="space-y-6"
-          >
-            <h2 className="text-4xl font-bold text-green-700">
+          {/* LEFT SIDE */}
+          <div className="space-y-6">
+            <h2 className="text-3xl sm:text-4xl font-bold text-green-700">
               Contact EcoTracker 🌱
             </h2>
 
-            <p className="text-gray-600 text-lg leading-relaxed">
-              At <span className="font-semibold text-green-700">EcoTracker</span>, 
-              we are committed to building innovative solutions that promote 
-              sustainability and protect our planet. Join us in creating a cleaner, 
-              greener future.
+            <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
+              At <span className="font-semibold text-green-700">EcoTracker</span>,
+              we are committed to building innovative solutions that promote
+              sustainability and protect our planet.
             </p>
 
-            <div className="space-y-4 mt-6">
-              <div className="flex items-start gap-4">
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
                 <Leaf className="text-green-600 mt-1" />
-                <p className="text-gray-700">
+                <p className="text-gray-700 text-sm sm:text-base">
                   Promote eco-friendly digital and real-world solutions.
                 </p>
               </div>
 
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3">
                 <Recycle className="text-green-600 mt-1" />
-                <p className="text-gray-700">
+                <p className="text-gray-700 text-sm sm:text-base">
                   Encourage recycling, waste reduction, and carbon tracking.
                 </p>
               </div>
 
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3">
                 <Globe className="text-green-600 mt-1" />
-                <p className="text-gray-700">
+                <p className="text-gray-700 text-sm sm:text-base">
                   Support global sustainability initiatives.
                 </p>
               </div>
 
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3">
                 <ShieldCheck className="text-green-600 mt-1" />
-                <p className="text-gray-700">
-                  Partner with organizations committed to environmental impact.
+                <p className="text-gray-700 text-sm sm:text-base">
+                  Partner with environmental organizations.
                 </p>
               </div>
             </div>
 
-            <div className="mt-6 text-gray-600">
+            <div className="mt-6 text-gray-600 text-sm sm:text-base">
               <p className="flex items-center gap-2">
                 <Mail size={16} className="text-green-600" />
                 support@ecotracker.com
@@ -130,20 +119,15 @@ const Contact = () => {
                 +92 300 4907243
               </p>
             </div>
-          </motion.div>
+          </div>
 
-          {/* RIGHT SIDE - CONTACT FORM */}
-          <motion.div
-            initial={{ opacity: 0, x: 80 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="bg-white shadow-2xl rounded-3xl p-8 border border-green-100"
-          >
-            <h3 className="text-2xl font-semibold text-green-700 mb-6">
+          {/* RIGHT SIDE FORM */}
+          <div className="bg-white shadow-xl rounded-2xl p-6 sm:p-8 border border-green-100">
+            <h3 className="text-xl sm:text-2xl font-semibold text-green-700 mb-6">
               Send Us a Message
             </h3>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-5" onSubmit={handleSubmit}>
               
               <div className="relative">
                 <User className="absolute left-3 top-3 text-green-500" size={18} />
@@ -151,7 +135,7 @@ const Contact = () => {
                   type="text"
                   name="name"
                   placeholder="Your Full Name"
-                  className="w-full pl-10 p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                  className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
                 />
               </div>
@@ -162,7 +146,7 @@ const Contact = () => {
                   type="email"
                   name="email"
                   placeholder="Your Email Address"
-                  className="w-full pl-10 p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                  className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
                 />
               </div>
@@ -171,7 +155,7 @@ const Contact = () => {
                 <MessageSquare className="absolute left-3 top-3 text-green-500" size={18} />
                 <select
                   name="inquiryType"
-                  className="w-full pl-10 p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition text-gray-600"
+                  className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-600"
                   required
                 >
                   <option value="">Select Inquiry Type</option>
@@ -187,35 +171,33 @@ const Contact = () => {
                 <textarea
                   name="message"
                   rows="4"
-                  placeholder="Write your message about sustainability or our services..."
-                  className="w-full pl-10 p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                  placeholder="Write your message..."
+                  className="w-full pl-10 p-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
                 ></textarea>
               </div>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-green-600 text-white py-3 rounded-xl font-semibold shadow-lg hover:bg-green-700 transition duration-300"
+                className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition"
               >
                 {loading ? "Sending..." : "Submit Message"}
-              </motion.button>
+              </button>
             </form>
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* CUSTOM POPUP */}
+      {/* POPUP */}
       {popup && (
         <>
           <div
-            className="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/50 z-50"
             onClick={() => setPopup(false)}
           ></div>
 
-          <div className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-[90%] max-w-sm p-8 border border-emerald-100">
+          <div className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl shadow-xl w-[90%] max-w-sm p-6">
             <h1 className="text-lg font-bold text-green-800 mb-4">
               {popupSuccess ? "Success" : "Error"}
             </h1>
@@ -225,10 +207,10 @@ const Contact = () => {
             <div className="flex justify-end">
               <button
                 onClick={() => setPopup(false)}
-                className={`px-6 py-2 rounded-lg font-semibold text-white transition-all duration-300 ${
+                className={`px-6 py-2 rounded-lg font-semibold text-white ${
                   popupSuccess
-                    ? "bg-gradient-to-r from-emerald-500 to-green-600"
-                    : "bg-gradient-to-r from-red-500 to-red-600"
+                    ? "bg-green-600"
+                    : "bg-red-600"
                 }`}
               >
                 OK
