@@ -87,8 +87,8 @@ const AuthPage = () => {
 
     try {
       const url = isLogin
-        ? "http://localhost:5000/api/auth/login"
-        : "http://localhost:5000/api/auth/signin";
+        ? "https://wahb-amir-eco-tracker.hf.space/api/auth/login"
+        : "https://wahb-amir-eco-tracker.hf.space/api/auth/signin";
 
       const body = isLogin
         ? { email, password }
@@ -136,7 +136,7 @@ const AuthPage = () => {
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/me", {
+      const res = await fetch("https://wahb-amir-eco-tracker.hf.space/api/auth/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Lock } from "lucide-react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://wahb-amir-eco-tracker.hf.space/api";
 
 const initialBadges = [
   { id: 1, title: "Eco Starter", description: "Logged your first eco activity", unlocked: false },

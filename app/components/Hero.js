@@ -11,7 +11,7 @@ const Hero = () => {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    fetch("http://localhost:5000/api/auth/me", {
+    fetch("https://wahb-amir-eco-tracker.hf.space/api/auth/me", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

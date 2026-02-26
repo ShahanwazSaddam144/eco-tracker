@@ -46,7 +46,7 @@ const Footer = () => {
     try {
       setIsSubscribing(true);
 
-      const res = await fetch("http://localhost:5000/api/newsletter", {
+      const res = await fetch("https://wahb-amir-eco-tracker.hf.space/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: newsletterEmail }),

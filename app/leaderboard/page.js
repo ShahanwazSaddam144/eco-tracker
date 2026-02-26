@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Trophy, Medal, Award, Flame } from "lucide-react";
 import Navbar from "../components/Navbar";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://wahb-amir-eco-tracker.hf.space/api";
 
 const getRankMedal = (rank) => {
   if (rank === 1) return { icon: "🥇", color: "text-yellow-500", bgColor: "bg-yellow-100" };

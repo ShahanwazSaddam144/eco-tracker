@@ -5,7 +5,7 @@ import { Leaf, Trash2, Award, Mail, User, Car, TrendingUp, LogOut } from "lucide
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://wahb-amir-eco-tracker.hf.space/api";
 
 const containerVariants = {
   hidden: { opacity: 0 },

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://wahb-amir-eco-tracker.hf.space/api";
 
 const TRANSPORT_CO2 = { walk: 0, bike: 0, public: 2, car: 8, rideshare: 6 };
 const ELECTRICITY_CO2 = { low: 2, medium: 5, high: 10, renewable: 0 };
