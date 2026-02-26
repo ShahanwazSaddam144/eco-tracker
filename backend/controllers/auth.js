@@ -41,7 +41,7 @@ router.post("/signin", async (req, res) => {
 
     await newUser.save();
 
-    const verifyUrl = `http://192.168.100.77:5000/api/auth/verify/${verifyToken}`;
+    const verifyUrl = `https://wahb-amir-eco-tracker.hf.space/api/auth/verify/${verifyToken}`;
     sendVerificationEmail(newUser.email, newUser.name, verifyUrl).catch((err) =>
       console.log("Email not sent:", err)
     );
