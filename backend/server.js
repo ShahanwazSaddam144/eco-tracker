@@ -8,7 +8,7 @@ const Tracker = require("./controllers/tracker");
 const Badge = require("./controllers/badges");
 const Contact = require("./controllers/contact");
 const Newsletter = require("./controllers/newsletter");
-const Port = process.env.PORT || 5000;
+const Port = process.env.PORT || 3000;
 const app = express();
 
 dotenv.config();
@@ -46,11 +46,7 @@ mongoose
     process.exit(1);
   });
 
-// Server connect
-app.listen(Port,(err)=>{
-    if(err){
-        console.err("❌❌ Error Connecting Server");
-    }else{
-        console.log(`✅✅ Server Running at http://localhost:${Port}`);
-    }
+// Bind to 0.0.0.0, not localhost
+app.listen(7860, () => {
+  console.log(`Server running on port 7860`);
 });
