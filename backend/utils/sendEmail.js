@@ -8,14 +8,16 @@ const EMAIL_PASS = process.env.EMAIL_PASS;
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 465,       // SSL
-  secure: true,    // must be true for port 465
+  port: 465, // SSL
+  secure: true, // must be true for port 465
   auth: {
     user: EMAIL_USER,
-    pass: EMAIL_PASS, // must be Gmail App Password if 2FA is on
+    pass: EMAIL_PASS, // Gmail App Password if 2FA is enabled
   },
   logger: true,
   debug: true,
+  connectionTimeout: 10000, // optional: fail faster
+  family: 4, // force IPv4
 });
 
 // Enable debug output for Nodemailer

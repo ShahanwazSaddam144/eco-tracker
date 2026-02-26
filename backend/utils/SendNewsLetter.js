@@ -6,11 +6,17 @@ dotenv.config();
 const sendEmail = async (to, userName = "Subscriber") => {
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465, // SSL
+      secure: true, // must be true for port 465
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: EMAIL_USER,
+        pass: EMAIL_PASS, // Gmail App Password if 2FA is enabled
       },
+      logger: true,
+      debug: true,
+      connectionTimeout: 10000, // optional: fail faster
+      family: 4, // force IPv4
     });
 
     // 🎨 Beautiful HTML Template
@@ -82,7 +88,6 @@ const sendEmail = async (to, userName = "Subscriber") => {
 
     await transporter.sendMail(mailOptions);
     console.log("Email sent successfully");
-
   } catch (error) {
     console.error("Email sending failed:", error);
     throw error;
